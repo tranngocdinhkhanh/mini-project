@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+
+import java.util.*;
+import java.util.stream.Collectors;
+
 @Getter
 @Setter
 @Entity
@@ -15,12 +19,12 @@ public class User {
     private Integer id;
 
     @Column(name = "user_name", length = 20)
-    private String userName;
+    private String username;
 
-    @Column(name = "salt",length = 1000)
+    @Column(name = "salt", length = 1000)
     private String salt;
 
-    @Column(name = "password",length = 1000)
+    @Column(name = "password", length = 1000)
     private String password;
 
     @Column(name = "first_name", length = 20)
