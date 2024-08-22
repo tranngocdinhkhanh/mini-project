@@ -10,6 +10,7 @@ import lombok.Setter;
 @Table(name = "credentials", schema = "miniprj")
 public class Credential {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "credential_id", nullable = false)
     private Integer id;
 

@@ -1,14 +1,20 @@
 package com.fsoft.jwdnd.course1.cloudstorage.controller;
 
+import com.fsoft.jwdnd.course1.cloudstorage.dto.CredentialDto;
 import com.fsoft.jwdnd.course1.cloudstorage.dto.UserDto;
+import com.fsoft.jwdnd.course1.cloudstorage.entity.Credential;
 import com.fsoft.jwdnd.course1.cloudstorage.entity.File;
+import com.fsoft.jwdnd.course1.cloudstorage.entity.Note;
 import com.fsoft.jwdnd.course1.cloudstorage.entity.User;
+import com.fsoft.jwdnd.course1.cloudstorage.services.CredentialService;
 import com.fsoft.jwdnd.course1.cloudstorage.services.FileService;
+import com.fsoft.jwdnd.course1.cloudstorage.services.NoteService;
 import com.fsoft.jwdnd.course1.cloudstorage.services.secure.EncryptionService;
 import com.fsoft.jwdnd.course1.cloudstorage.services.secure.HashService;
 import com.fsoft.jwdnd.course1.cloudstorage.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +35,12 @@ public class UserController {
     private FileService fileService;
 
     @Autowired
+    private NoteService noteService;
+
+    @Autowired
+    private CredentialService credentialService;
+
+    @Autowired
     private HashService hashService;
 
     @GetMapping(value = "/login")
@@ -39,13 +51,13 @@ public class UserController {
         return "login";
     }
 
-    @GetMapping("/signup")
+    @GetMapping("/getSignup")
     public String signup(Model model) {
         model.addAttribute("userDto", new UserDto());
         return "signup";
     }
 
-    @PostMapping(value = "/signup")
+    @PostMapping(value = "/postSignup")
     public String signup(@Valid @ModelAttribute UserDto userDto, Model model) {
         if (userService.findByUsername(userDto.getUserName()) != null) {
             model.addAttribute("notification", "user already exists");
@@ -63,9 +75,14 @@ public class UserController {
     }
 
     @GetMapping(value = "/home")
-    public String home(@ModelAttribute(name = "userId") int userId, Model model) {
-        List<File> fileList = fileService.getAllFileByUserId(userId);
+    public String home(Authentication authentication, Model model) {
+        User user = userService.findByUsername(authentication.getName());
+        List<File> fileList = fileService.getAllByUserId(user.getId());
         model.addAttribute("fileList", fileList);
+        List<Note> noteList = noteService.getAllByUserId(user.getId());
+        model.addAttribute("noteList", noteList);
+        List<CredentialDto> credentialDtoList = credentialService.getAllDtoByUserId(user.getId());
+        model.addAttribute("credentialDtoList", credentialDtoList);
         return "home";
     }
 }

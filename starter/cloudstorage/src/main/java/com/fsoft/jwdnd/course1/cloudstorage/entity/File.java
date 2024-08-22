@@ -10,6 +10,7 @@ import lombok.Setter;
 @Table(name = "files", schema = "miniprj")
 public class File {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "file_id", nullable = false)
     private Integer id;
 
@@ -26,7 +27,7 @@ public class File {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "file_data")
+    @Column(name = "file_data", columnDefinition = "LONGBLOB")
     private byte[] fileData;
 
 }
