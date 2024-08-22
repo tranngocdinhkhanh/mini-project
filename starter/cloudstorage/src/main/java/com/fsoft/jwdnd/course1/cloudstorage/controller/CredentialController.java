@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/credential")
@@ -37,8 +34,9 @@ public class CredentialController {
         return "redirect:/user/home";
     }
 
-    @GetMapping("/postDelete")
-    public String getCredential() {
-
+    @GetMapping(value = "/postDelete/{id}")
+    public String deleteCredential(@PathVariable("id") Integer id){
+        credentialService.delete(id);
+        return "redirect:/user/home";
     }
 }

@@ -11,7 +11,7 @@
 <body class="p-3 mb-2 bg-light text-black">
 <div class="container">
     <div id="logoutDiv">
-        <form action="#" method="POST">
+        <form th:action="@{/user/logout}" method="post">
             <button type="submit" class="btn btn-secondary float-right">Logout</button>
         </form>
     </div>
@@ -21,7 +21,7 @@
         <!--        this is menu-->
         <nav style="clear: right;">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <a class="nav-item nav-link active" id="nav-files-tab" data-toggle="tab" href="#nav-files" role="tab"
+                <a class="nav-item nav-link " id="nav-files-tab" data-toggle="tab" href="#nav-files" role="tab"
                    aria-controls="nav-files" aria-selected="true">Files</a>
                 <a class="nav-item nav-link" id="nav-notes-tab" data-toggle="tab" href="#nav-notes" role="tab"
                    aria-controls="nav-notes" aria-selected="false">Notes</a>
@@ -33,7 +33,7 @@
 
 
             <!--            this is file show-->
-            <div class="tab-pane fade show active" id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab">
+            <div class="tab-pane fade " id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab">
                 <form th:action="@{/file/postAddFile}" enctype="multipart/form-data" method="POST">
                     <div class="container">
                         <div class="row" style="margin: 1em;">
@@ -245,6 +245,24 @@
         $('#credential-password').val(password ? password : '');
         $('#credentialModal').modal('show');
     }
+
+    $(document).ready(function () {
+        // Khôi phục tab được lưu trong localStorage, hoặc để mặc định là tab đầu tiên
+        var activeTab = localStorage.getItem('activeTab');
+        if (activeTab) {
+            $('#' + activeTab).tab('show');
+        } else {
+            // Nếu không có tab nào trong localStorage, tab đầu tiên sẽ được chọn mặc định
+            $('#nav-files-tab').tab('show');
+        }
+
+        // Lưu lại tab được chọn vào localStorage mỗi khi có sự thay đổi
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var activeTab = $(e.target).attr('id');
+            localStorage.setItem('activeTab', activeTab);
+        });
+    });
+
 </script>
 </body>
 </html>

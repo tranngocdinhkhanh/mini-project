@@ -55,4 +55,9 @@ public class CredentialServiceImpl implements CredentialService {
         credential.setId(id);
         credentialRepository.save(credential);
     }
+
+    @Override
+    public void delete(int id) {
+        credentialRepository.deleteById(id);
+    }
 }

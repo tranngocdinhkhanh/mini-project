@@ -9,4 +9,5 @@ public interface CredentialService {
     List<Credential> getAllByUserId(int userId);
     List<CredentialDto> getAllDtoByUserId(int userId);
      void add(Integer id, String url, String username, String password,String name);
+     void delete(int id);
 }
